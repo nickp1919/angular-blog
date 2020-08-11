@@ -1,0 +1,52 @@
+<form class="card" [formGroup]="form" (ngSubmit)="submit()">
+  <h2>Войти в панель администратора</h2>
+  <div class="alert alert-danger" *ngIf="auth.error$ | async as error">
+    {{error}}
+  </div>
+  <div class="alert alert-info" *ngIf="message">
+    {{message}}
+  </div>
+
+  <div
+    [ngClass]="{invalid: form.get('email').touched && form.get('email').invalid}"
+    class="form-control"
+  >
+    <label for="email">Email:</label>
+    <input id="email" type="email" formControlName="email">
+    <div
+      *ngIf="form.get('email').touched && form.get('email').invalid"
+      class="validation"
+    >
+      <small *ngIf="form.get('email').errors.required">
+        Поле email не может быть пустым
+      </small>
+      <small *ngIf="form.get('email').errors.email">
+        Email не корректный
+      </small>
+    </div>
+  </div>
+  <div
+    [ngClass]="{invalid: form.get('password').touched && form.get('password').invalid}"
+    class="form-control"
+  >
+    <label for="password">Пароль:</label>
+    <input id="password" type="password" formControlName="password">
+    <div
+      *ngIf="form.get('password').touched && form.get('password').invalid"
+      class="validation"
+    >
+      <small *ngIf="form.get('password').errors.required">
+        Пароль должен иметь минимум 6 символов
+      </small>
+      <small *ngIf="form.get('password').errors.minlength">
+        Пароль должен иметь минимум {{form.get('password').errors.minlength.requiredLength}} символов.
+        Количество введенных символов: {{form.get('password').errors.minlength.actualLength}}.
+      </small>
+    </div>
+  </div>
+  <button
+    type="submit"
+    class="btn btn-primary"
+    [disabled]="form.invalid || submitted"
+  >Войти</button>
+</form>
